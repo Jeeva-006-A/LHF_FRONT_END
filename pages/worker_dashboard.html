@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Worker Dashboard - Local Help Finder </title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <link rel="stylesheet" href="/css/worker_dashboard.css" />
+  </head>
+  <body>
+    <!-- Dashboard Navigation -->
+    <nav class="dashboard-nav">
+      <div class="container">
+        <div class="nav-content">
+          <h2>
+            <i class="fas fa-wrench"></i>
+            Local Help Finder  - Worker Dashboard
+          </h2>
+
+          <div class="nav-right">
+            <button class="btn-profile" onclick="toggleProfile()">
+              <span class="profile-icon">
+                <i class="fas fa-user"></i>
+              </span>
+
+              <span>My Profile</span>
+            </button>
+            <a href="/index.html" class="btn btn-logout">Logout</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Profile Sidebar -->
+    <div class="profile-sidebar" id="profileSidebar">
+      <div class="profile-header">
+        <h3><i class="fas fa-user"></i> My Profile</h3>
+
+        <button class="close-profile" onclick="toggleProfile()">×</button>
+      </div>
+      <div class="profile-content">
+        <div class="profile-field">
+          <label>Full Name</label>
+
+          <p id="viewWName">Worker Name</p>
+          <input type="text" id="editWName" style="display: none" />
+        </div>
+
+        <div class="profile-field">
+          <label>Email Address</label>
+          <p>worker@example.com</p>
+        </div>
+        <div class="profile-field">
+          <label>Phone Number</label>
+
+          <p id="viewWPhone">+91 9876543210</p>
+          <input type="text" id="editWPhone" style="display: none" />
+        </div>
+
+        <div class="profile-field">
+          <label>Service Category</label>
+          <p id="profileCategory">Plumber</p>
+        </div>
+        <div class="profile-field">
+          <label>Experience</label>
+          <p>5 Years</p>
+        </div>
+        <div class="profile-field">
+          <label>Address</label>
+
+          <!-- view mode -->
+          <p id="viewWAddress">Chennai, Tamil Nadu</p>
+
+          <!-- edit mode -->
+          <textarea id="editWAddress" style="display: none"></textarea>
+        </div>
+
+        <div class="profile-field">
+          <label>Member Since</label>
+          <p>December 2024</p>
+        </div>
+        <div class="profile-field">
+          <label>Account Status</label>
+          <p><span class="badge badge-accepted">Active</span></p>
+        </div>
+        <button
+          class="btn btn-secondary btn-full"
+          style="margin-top: 20px"
+          onclick="enableWorkerEdit()"
+        >
+          <i class="fas fa-edit"></i> Edit Profile
+        </button>
+
+        <button
+          class="btn btn-primary btn-full profile-save-btn"
+          style="display: none; margin-top: 15px"
+          onclick="saveWorkerProfile()"
+        >
+          Save Profile
+        </button>
+      </div>
+    </div>
+
+    <!-- Overlay -->
+    <div class="overlay" id="overlay" onclick="toggleProfile()"></div>
+
+    <!-- Dashboard Content -->
+    <div class="dashboard-container">
+      <div class="container">
+        <!-- Category Info Banner -->
+        <div class="category-banner">
+          <div class="category-icon" id="categoryIcon">
+            <i class="fas fa-faucet"></i>
+          </div>
+
+          <div class="category-info">
+            <h3>
+              Your Service Category: <span id="categoryName">PLUMBER</span>
+            </h3>
+            <p>
+              You will only receive booking requests for
+              <strong id="categoryType">Plumber</strong> services
+            </p>
+          </div>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-clipboard-list"></i></div>
+            <div class="stat-info">
+              <h3>Total Jobs</h3>
+              <p class="stat-number" id="totalJobs">3</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-bell"></i></div>
+            <div class="stat-info">
+              <h3>New Requests</h3>
+              <p class="stat-number" id="newRequests">3</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+            <div class="stat-info">
+              <h3>Accepted Jobs</h3>
+              <p class="stat-number" id="acceptedJobs">0</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-check"></i></div>
+            <div class="stat-info">
+              <h3>Completed Jobs</h3>
+              <p class="stat-number" id="completedJobs">0</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="dashboard-main">
+          <!-- Incoming Bookings Section - PLUMBER JOBS -->
+          <section
+            class="content-section"
+            id="plumberJobs"
+            style="display: none"
+          >
+            <h3><i class="fas fa-clipboard-list"></i> Incoming Plumber Jobs</h3>
+
+            <div class="booking-card pending-card">
+              <div class="booking-header">
+                <h4><i class="fas fa-faucet"></i> PLUMBER Service</h4>
+                <span class="badge badge-new">
+                  <i class="fas fa-bell"></i> New Request
+                </span>
+              </div>
+              <div class="booking-body">
+                <p>
+                  <strong><i class="fas fa-user"></i> Customer:</strong> Arun
+                  Kumar
+                </p>
+                <p>
+                  <strong><i class="fas fa-edit"></i> Problem:</strong> Water
+                  pipe burst
+                </p>
+                <p>
+                  <strong
+                    ><i class="fas fa-map-marker-alt"></i> Address:</strong
+                  >
+                  Anna Nagar
+                </p>
+                <p>
+                  <strong><i class="fas fa-calendar"></i> Scheduled:</strong>
+                  Dec 28
+                </p>
+                <p>
+                  <strong><i class="fas fa-phone"></i> Phone:</strong> 98765
+                </p>
+
+                <div class="booking-actions">
+                  <button
+                    class="btn btn-accept btn-small"
+                    onclick="acceptBooking(this)"
+                  >
+                    <i class="fas fa-check-circle"></i> Accept Booking
+                  </button>
+
+                  <button
+                    class="btn btn-decline btn-small"
+                    onclick="declineBooking(this)"
+                  >
+                    <i class="fas fa-times"></i> Decline
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="booking-card pending-card">
+              <div class="booking-header">
+                <h4><i class="fas fa-faucet"></i> PLUMBER Service</h4>
+                <span class="badge badge-new">
+                  <i class="fas fa-bell"></i> New Request</span
+                >
+              </div>
+              <div class="booking-body">
+                <p>
+                  <strong><i class="fas fa-user"></i> Customer:</strong> Priya
+                  Sharma
+                </p>
+                <p>
+                  <strong><i class="fas fa-edit"></i> Problem:</strong> Kitchen
+                  tap leaking continuously
+                </p>
+                <p>
+                  <strong
+                    ><i class="fas fa-map-marker-alt"></i> Address:</strong
+                  >
+                  45, T Nagar, Chennai - 600017
+                </p>
+                <p>
+                  <strong><i class="fas fa-calendar"></i> Scheduled:</strong>
+                  Dec 29, 2024 at 02:00 PM
+                </p>
+                <p>
+                  <strong><i class="fas fa-phone"></i> Phone:</strong> +91
+                  9876543211
+                </p>
+                <div class="booking-actions">
+                  <button
+                    class="btn btn-accept btn-small"
+                    onclick="acceptBooking(this)"
+                  >
+                    <i class="fas fa-check-circle"></i> Accept Booking
+                  </button>
+
+                  <button
+                    class="btn btn-decline btn-small"
+                    onclick="declineBooking(this)"
+                  >
+                    <i class="fas fa-times"></i> Decline
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="booking-card pending-card">
+              <div class="booking-header">
+                <h4><i class="fas fa-faucet"></i> PLUMBER Service</h4>
+                <span class="badge badge-new">
+                  <i class="fas fa-bell"></i> New Request</span
+                >
+              </div>
+              <div class="booking-body">
+                <p>
+                  <strong><i class="fas fa-user"></i> Customer:</strong> Vijay M
+                </p>
+                <p>
+                  <strong><i class="fas fa-edit"></i> Problem:</strong> Bathroom
+                  sink drainage blocked
+                </p>
+                <p>
+                  <strong
+                    ><i class="fas fa-map-marker-alt"></i> Address:</strong
+                  >
+                  67, Velachery, Chennai - 600042
+                </p>
+                <p>
+                  <strong><i class="fas fa-calendar"></i> Scheduled:</strong>
+                  Dec 30, 2024 at 11:00 AM
+                </p>
+                <p>
+                  <strong><i class="fas fa-phone"></i> Phone:</strong> +91
+                  9876543216
+                </p>
+                <div class="booking-actions">
+                  <button
+                    class="btn btn-accept btn-small"
+                    onclick="acceptBooking(this)"
+                  >
+                    <i class="fas fa-check-circle"></i> Accept Booking
+                  </button>
+
+                  <button
+                    class="btn btn-decline btn-small"
+                    onclick="declineBooking(this)"
+                  >
+                    <i class="fas fa-times"></i> Decline
+                  </button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Incoming Bookings Section - ELECTRICIAN JOBS -->
+          <section
+            class="content-section"
+            id="electricianJobs"
+            style="display: none"
+          >
+            <h3>
+              <i class="fas fa-clipboard-list"></i> Incoming Electrician Jobs
+            </h3>
+
+            <div class="booking-card pending-card">
+              <div class="booking-header">
+                <h4>
+                  <h3><i class="fas fa-bolt"></i> Incoming Electrician Jobs</h3>
+                  ELECTRICIAN Service
+                </h4>
+                <span class="badge badge-new"
+                  ><i class="fas fa-bell"></i> New Request</span
+                >
+              </div>
+              <div class="booking-body">
+                <p>
+                  <strong><i class="fas fa-user"></i> Customer:</strong> Ramesh
+                  K
+                </p>
+                <p>
+                  <strong><i class="fas fa-edit"></i> Problem:</strong> Fan not
+                  working in bedroom
+                </p>
+                <p>
+                  <strong
+                    ><i class="fas fa-map-marker-alt"></i> Address:</strong
+                  >
+                  56, Adyar, Chennai - 600020
+                </p>
+                <p>
+                  <strong><i class="fas fa-calendar"></i> Scheduled:</strong>
+                  Dec 28, 2024 at 10:00 AM
+                </p>
+                <p>
+                  <strong><i class="fas fa-phone"></i> Phone:</strong> +91
+                  9876543213
+                </p>
+                <div class="booking-actions">
+                  <button
+                    class="btn btn-accept btn-small"
+                    onclick="acceptBooking(this)"
+                  >
+                    <i class="fas fa-check-circle"></i> Accept Booking
+                  </button>
+
+                  <button
+                    class="btn btn-decline btn-small"
+                    onclick="declineBooking(this)"
+                  >
+                    <i class="fas fa-times"></i> Decline
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="booking-card pending-card">
+              <div class="booking-header">
+                <h4><i class="fas fa-bolt"></i> ELECTRICIAN Service</h4>
+
+                <span class="badge badge-new"
+                  ><i class="fas fa-bell"></i> New Request</span
+                >
+              </div>
+              <div class="booking-body">
+                <p>
+                  <strong><i class="fas fa-user"></i> Customer:</strong> Lakshmi
+                  R
+                </p>
+                <p>
+                  <strong><i class="fas fa-edit"></i> Problem:</strong> Switch
+                  board replacement needed
+                </p>
+                <p>
+                  <strong
+                    ><i class="fas fa-map-marker-alt"></i> Address:</strong
+                  >
+                  89, Porur, Chennai - 600116
+                </p>
+                <p>
+                  <strong><i class="fas fa-calendar"></i> Scheduled:</strong>
+                  Dec 29, 2024 at 03:00 PM
+                </p>
+                <p>
+                  <strong><i class="fas fa-phone"></i> Phone:</strong> +91
+                  9876543214
+                </p>
+                <div class="booking-actions">
+                  <button
+                    class="btn btn-accept btn-small"
+                    onclick="acceptBooking(this)"
+                  >
+                    <i class="fas fa-check-circle"></i> Accept Booking
+                  </button>
+
+                  <button
+                    class="btn btn-decline btn-small"
+                    onclick="declineBooking(this)"
+                  >
+                    <i class="fas fa-times"></i> Decline
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="booking-card pending-card">
+              <div class="booking-header">
+                <h4><i class="fas fa-bolt"></i> ELECTRICIAN Service</h4>
+                <span class="badge badge-new"
+                  ><i class="fas fa-bell"></i> New Request</span
+                >
+              </div>
+              <div class="booking-body">
+                <p>
+                  <strong><i class="fas fa-user"></i> Customer:</strong> Suresh
+                  B
+                </p>
+                <p>
+                  <strong><i class="fas fa-edit"></i> Problem:</strong> Wiring
+                  issue in kitchen
+                </p>
+                <p>
+                  <strong
+                    ><i class="fas fa-map-marker-alt"></i> Address:</strong
+                  >
+                  12, T Nagar, Chennai - 600017
+                </p>
+                <p>
+                  <strong><i class="fas fa-calendar"></i> Scheduled:</strong>
+                  Dec 30, 2024 at 01:00 PM
+                </p>
+                <p>
+                  <strong><i class="fas fa-phone"></i> Phone:</strong> +91
+                  9876543217
+                </p>
+                <div class="booking-actions">
+                  <button
+                    class="btn btn-accept btn-small"
+                    onclick="acceptBooking(this)"
+                  >
+                    <i class="fas fa-check-circle"></i> Accept Booking
+                  </button>
+
+                  <button
+                    class="btn btn-decline btn-small"
+                    onclick="declineBooking(this)"
+                  >
+                    <i class="fas fa-times"></i> Decline
+                  </button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Incoming Bookings Section - MECHANIC JOBS -->
+          <section
+            class="content-section"
+            id="mechanicJobs"
+            style="display: none"
+          >
+            <h3>
+              <i class="fas fa-clipboard-list"></i> Incoming Mechanic Jobs
+            </h3>
+
+            <div class="booking-card pending-card">
+              <div class="booking-header">
+                <h4><i class="fas fa-wrench"></i> MECHANIC Service</h4>
+                <span class="badge badge-new"
+                  ><i class="fas fa-bell"></i> New Request</span
+                >
+              </div>
+              <div class="booking-body">
+                <p>
+                  <strong><i class="fas fa-user"></i> Customer:</strong> Suresh
+                  Babu
+                </p>
+                <p>
+                  <strong><i class="fas fa-edit"></i> Problem:</strong> Bike not
+                  starting, battery issue
+                </p>
+                <p>
+                  <strong
+                    ><i class="fas fa-map-marker-alt"></i> Address:</strong
+                  >
+                  78, Velachery, Chennai - 600042
+                </p>
+                <p>
+                  <strong><i class="fas fa-calendar"></i> Scheduled:</strong>
+                  Dec 30, 2024 at 11:00 AM
+                </p>
+                <p>
+                  <strong><i class="fas fa-phone"></i> Phone:</strong> +91
+                  9876543212
+                </p>
+                <div class="booking-actions">
+                  <button
+                    class="btn btn-accept btn-small"
+                    onclick="acceptBooking(this)"
+                  >
+                    <i class="fas fa-check-circle"></i> Accept Booking
+                  </button>
+
+                  <button
+                    class="btn btn-decline btn-small"
+                    onclick="declineBooking(this)"
+                  >
+                    <i class="fas fa-times"></i> Decline
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="booking-card pending-card">
+              <div class="booking-header">
+                <h4><i class="fas fa-wrench"></i> MECHANIC Service</h4>
+                <span class="badge badge-new"
+                  ><i class="fas fa-bell"></i> New Request</span
+                >
+              </div>
+              <div class="booking-body">
+                <p>
+                  <strong><i class="fas fa-user"></i> Customer:</strong> Karthik
+                  P
+                </p>
+                <p>
+                  <strong><i class="fas fa-edit"></i> Problem:</strong> Car AC
+                  not cooling properly
+                </p>
+                <p>
+                  <strong
+                    ><i class="fas fa-map-marker-alt"></i> Address:</strong
+                  >
+                  34, Chromepet, Chennai - 600044
+                </p>
+                <p>
+                  <strong><i class="fas fa-calendar"></i> Scheduled:</strong>
+                  Dec 31, 2024 at 02:00 PM
+                </p>
+                <p>
+                  <strong><i class="fas fa-phone"></i> Phone:</strong> +91
+                  9876543215
+                </p>
+                <div class="booking-actions">
+                  <button
+                    class="btn btn-accept btn-small"
+                    onclick="acceptBooking(this)"
+                  >
+                    <i class="fas fa-check-circle"></i> Accept Booking
+                  </button>
+
+                  <button
+                    class="btn btn-decline btn-small"
+                    onclick="declineBooking(this)"
+                  >
+                    <i class="fas fa-times"></i> Decline
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="booking-card pending-card">
+              <div class="booking-header">
+                <h4><i class="fas fa-wrench"></i> MECHANIC Service</h4>
+                <span class="badge badge-new"
+                  ><i class="fas fa-bell"></i> New Request</span
+                >
+              </div>
+              <div class="booking-body">
+                <p>
+                  <strong><i class="fas fa-user"></i> Customer:</strong> Anand R
+                </p>
+                <p>
+                  <strong><i class="fas fa-edit"></i> Problem:</strong> Bike
+                  engine oil change needed
+                </p>
+                <p>
+                  <strong
+                    ><i class="fas fa-map-marker-alt"></i> Address:</strong
+                  >
+                  90, Anna Nagar, Chennai - 600040
+                </p>
+                <p>
+                  <strong><i class="fas fa-calendar"></i> Scheduled:</strong>
+                  Jan 1, 2025 at 10:00 AM
+                </p>
+                <p>
+                  <strong><i class="fas fa-phone"></i> Phone:</strong> +91
+                  9876543218
+                </p>
+                <div class="booking-actions">
+                  <button
+                    class="btn btn-accept btn-small"
+                    onclick="acceptBooking(this)"
+                  >
+                    <i class="fas fa-check-circle"></i> Accept Booking
+                  </button>
+
+                  <button
+                    class="btn btn-decline btn-small"
+                    onclick="declineBooking(this)"
+                  >
+                    <i class="fas fa-times"></i> Decline
+                  </button>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function enableWorkerEdit() {
+        console.log("Edit clicked"); 
+        document.getElementById("viewWName").style.display = "none";
+        document.getElementById("viewWPhone").style.display = "none";
+        document.getElementById("viewWAddress").style.display = "none";
+
+        document.getElementById("editWName").style.display = "block";
+        document.getElementById("editWPhone").style.display = "block";
+        document.getElementById("editWAddress").style.display = "block";
+
+        document.getElementById("editWName").value =
+          document.getElementById("viewWName").innerText;
+
+        document.getElementById("editWPhone").value =
+          document.getElementById("viewWPhone").innerText;
+
+        document.getElementById("editWAddress").value =
+          document.getElementById("viewWAddress").innerText;
+
+        document.querySelector(".profile-save-btn").style.display = "block";
+      }
+
+      function saveWorkerProfile() {
+        alert("Worker profile saved (backend next step)");
+      }
+
+      let workerCategory = "plumber";
+
+      
+      const categoryData = {
+        plumber: {
+          name: "PLUMBER",
+          icon: "fas fa-faucet",
+          type: "Plumber",
+        },
+        electrician: {
+          name: "ELECTRICIAN",
+          icon: "fas fa-bolt",
+          type: "Electrician",
+        },
+        mechanic: {
+          name: "MECHANIC",
+          icon: "fas fa-wrench",
+          type: "Mechanic",
+        },
+      };
+
+      const category = categoryData[workerCategory];
+
+      
+      document.getElementById(
+        "categoryIcon"
+      ).innerHTML = `<i class="${category.icon}"></i>`;
+
+      
+      document.getElementById("categoryName").textContent = category.name;
+      document.getElementById("categoryType").textContent = category.type;
+      document.getElementById("profileCategory").textContent = category.type;
+
+     
+      document.getElementById(workerCategory + "Jobs").style.display = "block";
+
+      // Toggle Profile Sidebar
+      function toggleProfile() {
+        const sidebar = document.getElementById("profileSidebar");
+        const overlay = document.getElementById("overlay");
+        sidebar.classList.toggle("active");
+        overlay.classList.toggle("active");
+      }
+
+      // Accept Booking
+      function acceptBooking(button) {
+        alert("Booking accepted successfully!");
+
+        const totalJobs = document.getElementById("totalJobs");
+        const newRequests = document.getElementById("newRequests");
+        const acceptedJobs = document.getElementById("acceptedJobs");
+
+       
+        totalJobs.textContent = parseInt(totalJobs.textContent) - 1;
+        newRequests.textContent = parseInt(newRequests.textContent) - 1;
+        acceptedJobs.textContent = parseInt(acceptedJobs.textContent) + 1;
+
+        button.closest(".booking-card").remove();
+      }
+
+   
+      function declineBooking(button) {
+        if (confirm("Are you sure you want to decline this booking?")) {
+          alert("Booking declined");
+
+          const totalJobs = document.getElementById("totalJobs");
+          const newRequests = document.getElementById("newRequests");
+
+          totalJobs.textContent = parseInt(totalJobs.textContent) - 1;
+          newRequests.textContent = parseInt(newRequests.textContent) - 1;
+
+          button.closest(".booking-card").remove();
+        }
+      }
+    </script>
+  </body>
+</html>
