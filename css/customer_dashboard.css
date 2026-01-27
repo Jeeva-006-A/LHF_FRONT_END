@@ -129,6 +129,9 @@ body {
     padding: 15px;
     font-size: 1.1em;
 }
+.form-row .btn-full {
+  grid-column: 1 / -1;
+}
 
 /* Profile Sidebar */
 .profile-sidebar {
