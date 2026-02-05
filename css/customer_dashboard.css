@@ -1,3 +1,23 @@
+:root {
+    --primary-color: #8b5cf6;
+    /* Violet 500 - Distinct from Teal and Blue, lighter and friendlier */
+    --primary-gradient: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+    --secondary-color: #0d9488;
+    /* Teal 600 - Contextual Awareness */
+    --accent-color: #f59e0b;
+    /* Amber 500 */
+    --text-dark: #1e293b;
+    /* Slate 800 */
+    --text-light: #64748b;
+    /* Slate 500 */
+    --bg-light: #f8fafc;
+    /* Slate 50 */
+    --white: #ffffff;
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --radius: 12px;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -6,7 +26,8 @@
 
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    background: #f5f7fa;
+    background: var(--bg-light);
+    color: var(--text-dark);
     min-height: 100vh;
 }
 
@@ -18,10 +39,10 @@ body {
 
 /* Navigation */
 .dashboard-nav {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: var(--primary-color);
     color: white;
-    padding: 20px 0;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    padding: 16px 0;
+    box-shadow: var(--shadow-md);
     position: sticky;
     top: 0;
     z-index: 100;
@@ -34,14 +55,15 @@ body {
 }
 
 .nav-content h2 {
-    font-size: 1.5em;
+    font-size: 1.4em;
+    font-weight: 600;
 }
 
 /* Right nav */
 .nav-right {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 16px;
 }
 
 /* Profile Button */
@@ -49,88 +71,90 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 10px 20px;
-    background: rgba(255, 255, 255, 0.2);
+    padding: 8px 16px;
+    background: rgba(255, 255, 255, 0.1);
     color: white;
-    border: 2px solid white;
-    border-radius: 8px;
-    font-weight: 600;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    font-weight: 500;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: all 0.2s;
 }
 
 .btn-profile:hover {
-    background: white;
-    color: #667eea;
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.4);
 }
 
 .profile-icon {
-    font-size: 1.3em;
+    font-size: 1.2em;
 }
 
 /* Buttons */
 .btn {
     padding: 10px 20px;
     border: none;
-    border-radius: 8px;
+    border-radius: 6px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: all 0.2s;
     text-decoration: none;
     display: inline-block;
+    font-size: 0.95em;
 }
 
 .btn-logout {
-    background: #dc3545;
+    background: #e53e3e;
     color: white;
 }
 
 .btn-logout:hover {
-    background: #c82333;
-    transform: translateY(-2px);
+    background: #c53030;
 }
 
 .btn-primary {
-    background: #667eea;
+    background: var(--primary-color);
     color: white;
 }
 
 .btn-primary:hover {
-    background: #764ba2;
+    background: #7c3aed;
 }
 
 .btn-secondary {
-    background: #28a745;
+    background: #4a5568;
+    /* Slate Blue-Grey instead of Green */
     color: white;
 }
 
 .btn-secondary:hover {
-    background: #218838;
+    background: #2d3748;
 }
 
 .btn-outline {
-    background: white;
-    color: #667eea;
-    border: 2px solid #667eea;
+    background: transparent;
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
 }
 
 .btn-outline:hover {
-    background: #667eea;
+    background: var(--primary-color);
     color: white;
 }
 
 .btn-small {
-    padding: 8px 15px;
-    font-size: 0.9em;
+    padding: 6px 12px;
+    font-size: 0.85em;
 }
 
 .btn-full {
     width: 100%;
-    padding: 15px;
-    font-size: 1.1em;
+    padding: 14px;
+    font-size: 1em;
 }
+
 .form-row .btn-full {
-  grid-column: 1 / -1;
+    grid-column: 1 / -1;
 }
 
 /* Profile Sidebar */
@@ -141,9 +165,9 @@ body {
     width: 400px;
     height: 100vh;
     background: white;
-    box-shadow: -5px 0 15px rgba(0,0,0,0.2);
+    box-shadow: -5px 0 25px rgba(0, 0, 0, 0.1);
     z-index: 1000;
-    transition: right 0.3s ease;
+    transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     overflow-y: auto;
 }
 
@@ -152,49 +176,61 @@ body {
 }
 
 .profile-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: var(--primary-color);
     color: white;
-    padding: 25px;
+    padding: 24px;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
 .profile-header h3 {
-    font-size: 1.5em;
+    font-size: 1.4em;
+    font-weight: 600;
 }
 
 .close-profile {
     background: none;
     border: none;
     color: white;
-    font-size: 2.5em;
+    font-size: 2em;
     cursor: pointer;
     line-height: 1;
+    padding: 0 8px;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+
+.close-profile:hover {
+    opacity: 1;
 }
 
 .profile-content {
-    padding: 30px;
+    padding: 24px;
 }
 
 .profile-field {
-    padding: 15px;
+    padding: 16px;
     background: #f8f9fa;
     border-radius: 8px;
-    margin-bottom: 15px;
+    margin-bottom: 16px;
+    border: 1px solid #edf2f7;
 }
 
 .profile-field label {
     font-weight: 600;
-    color: #666;
-    font-size: 0.9em;
+    color: var(--text-light);
+    font-size: 0.85em;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
     display: block;
     margin-bottom: 8px;
 }
 
 .profile-field p {
-    color: #333;
+    color: var(--text-dark);
     font-size: 1em;
+    font-weight: 500;
 }
 
 .profile-field input,
@@ -202,40 +238,41 @@ body {
     width: 100%;
     padding: 10px;
     margin-top: 6px;
-    border: 1.5px solid #d1d5db;
+    border: 1px solid #e2e8f0;
     border-radius: 6px;
     font-size: 0.95em;
     font-family: inherit;
+    transition: border-color 0.2s;
 }
 
 .profile-field textarea {
     resize: vertical;
-    min-height: 70px;
+    min-height: 80px;
 }
 
 .profile-field input:focus,
 .profile-field textarea:focus {
     outline: none;
-    border-color: #667eea;
-    background: #ffffff;
+    border-color: var(--primary-color);
+    background: white;
 }
+
 .profile-save-btn {
-  background: #667eea;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 15px;
-  font-size: 1em;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.3s;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 14px;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+    width: 100%;
 }
 
 .profile-save-btn:hover {
-  background: #764ba2;
+    background: #7c3aed;
 }
-
-
 
 /* Overlay */
 .overlay {
@@ -244,7 +281,8 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.5);
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(2px);
     z-index: 999;
     display: none;
 }
@@ -268,34 +306,40 @@ body {
 
 .stat-card {
     background: white;
-    padding: 25px;
-    border-radius: 15px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    padding: 24px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
     display: flex;
     align-items: center;
     gap: 20px;
-    transition: all 0.3s;
+    transition: all 0.2s;
+    border: 1px solid #edf2f7;
 }
 
 .stat-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
 }
 
 .stat-icon {
-    font-size: 3em;
+    font-size: 2.5em;
+    padding: 12px;
+    background: rgba(139, 92, 246, 0.1);
+    border-radius: 12px;
+    color: var(--primary-color);
 }
 
 .stat-info h3 {
     font-size: 0.9em;
-    color: #666;
-    margin-bottom: 8px;
+    color: var(--text-light);
+    margin-bottom: 4px;
+    font-weight: 500;
 }
 
 .stat-number {
-    font-size: 2em;
-    font-weight: bold;
-    color: #667eea;
+    font-size: 1.8em;
+    font-weight: 700;
+    color: var(--text-dark);
 }
 
 /* Dashboard Main */
@@ -308,17 +352,18 @@ body {
 /* Content Section */
 .content-section {
     background: white;
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    padding: 32px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid #edf2f7;
 }
 
 .content-section h3 {
-    font-size: 1.5em;
-    margin-bottom: 25px;
-    color: #333;
-    border-bottom: 2px solid #667eea;
-    padding-bottom: 10px;
+    font-size: 1.4em;
+    margin-bottom: 24px;
+    color: var(--text-dark);
+    padding-bottom: 12px;
+    border-bottom: 1px solid #edf2f7;
 }
 
 /* Booking Form */
@@ -331,7 +376,7 @@ body {
 .form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 20px;
+    gap: 24px;
 }
 
 .form-group {
@@ -342,24 +387,26 @@ body {
 
 .form-group label {
     font-weight: 600;
-    color: #333;
+    color: var(--text-dark);
+    font-size: 0.9em;
 }
 
 .form-group input,
 .form-group select,
 .form-group textarea {
     padding: 12px;
-    border: 2px solid #e0e0e0;
-    border-radius: 8px;
-    font-size: 1em;
-    transition: border-color 0.3s;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    font-size: 0.95em;
+    transition: border-color 0.2s;
 }
 
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
     outline: none;
-    border-color: #667eea;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.1);
 }
 
 .form-group textarea {
@@ -369,137 +416,150 @@ body {
 /* Booking Cards */
 .booking-card {
     background: #f8f9fa;
-    padding: 20px;
+    padding: 24px;
     margin-bottom: 20px;
-    transition: all 0.3s;
+    transition: all 0.2s;
+    border-radius: 8px;
+    border: 1px solid #edf2f7;
 }
 
 .booking-card:hover {
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    background: white;
+    box-shadow: var(--shadow-sm);
+    border-color: #e2e8f0;
 }
 
 .accepted-card {
     background: #f0fff4;
+    /* Keep subtle indication */
+    border-color: #c6f6d5;
 }
 
 .booking-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 15px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .booking-header h4 {
-    font-size: 1.2em;
-    color: #333;
-}
-
-.badge {
-    padding: 6px 15px;
-    border-radius: 20px;
-    font-size: 0.85em;
+    font-size: 1.1em;
+    color: var(--text-dark);
     font-weight: 600;
 }
 
+.badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8em;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+}
+
 .badge-accepted {
-    background: #d4edda;
-    color: #155724;
+    background: #c6f6d5;
+    color: #22543d;
 }
 
 .badge-pending {
-    background: #fff3cd;
-    color: #856404;
+    background: #feebc8;
+    color: #744210;
 }
 
 .badge-completed {
-    background: #cfe2ff;
-    color: #084298;
+    background: #bee3f8;
+    color: #2a4365;
 }
 
 .booking-body p {
     margin: 8px 0;
-    color: #555;
+    color: var(--text-dark);
     line-height: 1.6;
+    font-size: 0.95em;
 }
 
 .booking-highlight {
-    background: #d4edda;
-    padding: 12px;
+    background: white;
+    padding: 16px;
     border-radius: 8px;
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #c3e6cb;
+    gap: 12px;
+    margin-bottom: 16px;
+    border: 1px solid #e2e8f0;
 }
 
 .highlight-icon {
-    font-size: 1.5em;
+    font-size: 1.2em;
 }
 
 .highlight-text {
     font-weight: 600;
-    color: #155724;
+    color: #2f855a;
 }
 
 .booking-actions {
     display: flex;
-    gap: 10px;
-    margin-top: 15px;
+    gap: 12px;
+    margin-top: 20px;
     flex-wrap: wrap;
 }
 
-
 i.fas {
-    color: #667eea;
+    /* Color handled by context usually, but for general icons in text: */
+    /* color: var(--primary-color); - optional if we want everything blue */
 }
 
 /* Navbar icons */
 .dashboard-nav i,
 .profile-icon i {
-    color: #ffffff;
+    color: white;
 }
 
 /* Stats icon */
 .stat-icon i {
-    color: #28a745;
+    /* controlled by parent color property now */
 }
 
 /* Section headings */
 .content-section h3 i {
-    color: #667eea;
+    color: var(--primary-color);
+    margin-right: 8px;
 }
 
-
+/* Specific Service Icons Colors - kept purely for semantic meaning */
 .fa-faucet {
-    color: #0d6efd; 
+    color: #3182ce;
 }
 
 .fa-bolt {
-    color: #ffc107; 
+    color: #d69e2e;
 }
 
 .fa-wrench {
-    color: #fd7e14; 
+    color: #e53e3e;
 }
 
-/* Status icons */
+/* Status icons matching badges */
 .badge-accepted i,
 .highlight-icon i {
-    color: #28a745;
+    color: #38a169;
 }
 
 .badge-pending i {
-    color: #ffc107;
+    color: #d69e2e;
 }
 
 .badge-completed i {
-    color: #0d6efd;
+    color: #3182ce;
 }
 
 /* Button icons */
 .btn-secondary i {
-    color: #ffffff;
+    color: white;
 }
 
 .btn-outline i {
@@ -508,24 +568,24 @@ i.fas {
 
 /* Cancel icon */
 .fa-times {
-    color: #dc3545;
+    color: #e53e3e;
 }
 
 /* View icon */
 .fa-eye {
-    color: #667eea;
+    color: var(--primary-color);
 }
 
 /* Edit icon */
 .fa-edit {
-    color: #ffffff;
+    color: white;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
     .nav-content {
         flex-direction: column;
-        gap: 15px;
+        gap: 16px;
     }
 
     .form-row {
